@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>(10+) Yellow Pages</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        :root {
+            --primary-background-color: #fafafa;
+            --card-background-color: #ffffff;
+            --border-color: #e0e0e0;
+            --primary-text-color: #212121;
+            --secondary-text-color: #616161;
+            --primary-color: #1976d2;
+            --error-text-color: #c62828;
+            --ai-text-color: #7154ff;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, Liberation Sans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol, "Noto Color Emoji";
+            background-color: var(--primary-background-color);
+            color: var(--primary-text-color);
+            margin: 0;
+            padding-top: 40px;
+        }
+
+        .glxy-page {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .glxy-page-toolbar {
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 24px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+        }
+
+        .glxy-page-title {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .glxy-page-main-content {
+            padding: 24px;
+        }
+
+        .crm-three-panel-page {
+            display: flex;
+            gap: 24px;
+        }
+
+        .crm-three-panel-page-left-panel,
+        .crm-three-panel-page-center-panel,
+        .crm-three-panel-page-right-panel {
+            background-color: var(--card-background-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+        }
+
+        .crm-three-panel-page-left-panel {
+            width: 25%;
+            padding: 16px;
+        }
+
+        .crm-three-panel-page-center-panel {
+            width: 50%;
+            flex-grow: 1;
+        }
+
+        .crm-three-panel-page-right-panel {
+            width: 25%;
+        }
+
+        .header-container {
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 16px;
+        }
+
+        .name {
+            font-size: 20px;
+            font-weight: 400;
+            text-align: center;
+            margin: 0;
+        }
+
+        .contact-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .contact-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            background-color: var(--card-background-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+        }
+
+        .mat-mdc-card {
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-shadow: none;
+        }
+
+        .mat-mdc-card-content {
+            padding: 16px;
+        }
+
+        .activity-timeline-container {
+            padding: 24px;
+        }
+
+        .activity-type-selector {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            align-items: center;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 14px;
+            cursor: pointer;
+            background-color: #e0e0e0;
+            color: #616161;
+            border: 1px solid transparent;
+        }
+
+        .chip.active {
+            background-color: #e3f2fd;
+            color: #1565c0;
+            border-color: #1976d2;
+        }
+
+        .chip .material-icons {
+            font-size: 18px;
+            margin-right: 6px;
+        }
+
+        .mdc-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 16px;
+            height: 36px;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            background-color: transparent;
+        }
+
+        .mdc-button--unelevated {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+
+        .activity-form-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        /* Voice Recorder Styles */
+        .voice-recorder-container {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            background-color: #f5f5f5;
+        }
+
+        .recorder-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .recorder-button {
+            background-color: var(--card-background-color);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .recorder-button:hover {
+            background-color: #e0e0e0;
+        }
+
+        .recorder-button.recording {
+            background-color: #ffebee;
+            border-color: #c62828;
+        }
+
+        .recorder-button.recording .material-icons {
+            color: #c62828;
+        }
+
+        .recorder-button .material-icons {
+            color: var(--primary-text-color);
+        }
+
+        .timer {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--primary-text-color);
+            min-width: 60px;
+        }
+
+        .audio-player-container {
+            margin-top: 16px;
+        }
+
+        audio {
+            width: 100%;
+            border-radius: 4px;
+        }
+
+        .transcription-container {
+            margin-top: 16px;
+            padding: 12px;
+            background-color: var(--card-background-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            display: none;
+        }
+
+        .transcription-container h3 {
+            margin-top: 0;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .transcription-text, .summary-text {
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--secondary-text-color);
+            white-space: pre-wrap;
+        }
+
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            margin: 16px auto;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="glxy-page">
+        <div class="glxy-page-toolbar">
+            <span class="glxy-page-title">Contact profile</span>
+        </div>
+        <div class="glxy-page-main-content">
+            <div class="crm-three-panel-page">
+                <div class="crm-three-panel-page-left-panel">
+                    <div class="header-container">
+                        <p class="name">sumi uzir</p>
+                        <div class="contact-buttons">
+                            <button class="contact-button"><i class="material-icons">question_answer</i></button>
+                            <button class="contact-button"><i class="material-icons">more_horiz</i></button>
+                        </div>
+                    </div>
+                    <div>
+                        <!-- Existing left panel content -->
+                        <p>Basic Information</p>
+                        <p>About Contact</p>
+                        <p>Primary Location</p>
+                    </div>
+                </div>
+                <div class="crm-three-panel-page-center-panel">
+                    <div class="activity-timeline-container">
+                        <div class="mat-mdc-card">
+                            <div class="mat-mdc-card-content">
+                                <div class="activity-type-selector">
+                                    <div class="chip"><i class="material-icons">done</i> Note</div>
+                                    <div class="chip"><i class="material-icons">email</i> Email</div>
+                                    <div class="chip active"><i class="material-icons">phone</i> Call</div>
+                                    <div class="chip"><i class="material-icons">calendar_today</i> Meeting</div>
+                                    <div class="chip"><i class="material-icons">assignment_turned_in</i> Task</div>
+                                </div>
+
+                                <!-- Voice Recorder Feature -->
+                                <div class="voice-recorder-container">
+                                    <div class="recorder-controls">
+                                        <button id="recordButton" class="recorder-button" title="Start Recording">
+                                            <i class="material-icons">mic</i>
+                                        </button>
+                                        <button id="pauseButton" class="recorder-button hidden" title="Pause Recording">
+                                            <i class="material-icons">pause</i>
+                                        </button>
+                                        <button id="stopButton" class="recorder-button hidden" title="Stop Recording">
+                                            <i class="material-icons">stop</i>
+                                        </button>
+                                        <div id="timer" class="timer">00:00</div>
+                                    </div>
+                                    <div id="audioPlayerContainer" class="audio-player-container"></div>
+                                    <button id="transcribeButton" class="mdc-button hidden">Transcribe & Summarize</button>
+                                    <div id="loadingSpinner" class="loading-spinner"></div>
+                                    <div id="transcriptionContainer" class="transcription-container">
+                                        <h3>Transcription</h3>
+                                        <p id="transcriptionText" class="transcription-text"></p>
+                                        <h3 style="margin-top: 16px;">Summary</h3>
+                                        <p id="summaryText" class="summary-text"></p>
+                                    </div>
+                                </div>
+                                <!-- End Voice Recorder Feature -->
+
+                                <div class="activity-form-actions">
+                                    <button class="mdc-button mdc-button--unelevated">Log activity</button>
+                                    <button class="mdc-button">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="crm-three-panel-page-right-panel">
+                    <!-- Existing right panel content -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM element references
+        const recordButton = document.getElementById('recordButton');
+        const pauseButton = document.getElementById('pauseButton');
+        const stopButton = document.getElementById('stopButton');
+        const timerElement = document.getElementById('timer');
+        const audioPlayerContainer = document.getElementById('audioPlayerContainer');
+        const transcribeButton = document.getElementById('transcribeButton');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const transcriptionContainer = document.getElementById('transcriptionContainer');
+        const transcriptionText = document.getElementById('transcriptionText');
+        const summaryText = document.getElementById('summaryText');
+
+        let mediaRecorder;
+        let audioChunks = [];
+        let timerInterval;
+        let seconds = 0;
+        let isPaused = false;
+
+        // Function to start recording
+        async function startRecording() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+
+                mediaRecorder.ondataavailable = event => {
+                    audioChunks.push(event.data);
+                };
+
+                mediaRecorder.onstop = () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    const audio = new Audio(audioUrl);
+                    audio.controls = true;
+                    audioPlayerContainer.innerHTML = '';
+                    audioPlayerContainer.appendChild(audio);
+                    audioChunks = [];
+                    transcribeButton.classList.remove('hidden');
+                };
+
+                mediaRecorder.start();
+                updateUIForRecording();
+                startTimer();
+            } catch (error) {
+                console.error("Error accessing microphone:", error);
+                alert("Could not access microphone. Please check permissions.");
+            }
+        }
+
+        // Function to pause/resume recording
+        function togglePause() {
+            if (mediaRecorder.state === 'recording') {
+                mediaRecorder.pause();
+                isPaused = true;
+                pauseButton.innerHTML = '<i class="material-icons">play_arrow</i>';
+                pauseButton.title = "Resume Recording";
+                stopTimer();
+            } else if (mediaRecorder.state === 'paused') {
+                mediaRecorder.resume();
+                isPaused = false;
+                pauseButton.innerHTML = '<i class="material-icons">pause</i>';
+                pauseButton.title = "Pause Recording";
+                startTimer();
+            }
+        }
+
+        // Function to stop recording
+        function stopRecording() {
+            if (mediaRecorder) {
+                mediaRecorder.stop();
+                updateUIForStopped();
+                stopTimer();
+                resetTimer();
+            }
+        }
+
+        // Timer functions
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                if (!isPaused) {
+                    seconds++;
+                    timerElement.textContent = formatTime(seconds);
+                }
+            }, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+        }
+
+        function resetTimer() {
+            seconds = 0;
+            timerElement.textContent = '00:00';
+        }
+
+        function formatTime(totalSeconds) {
+            const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
+            const seconds = (totalSeconds % 60).toString().padStart(2, '0');
+            return `${minutes}:${seconds}`;
+        }
+
+        // UI update functions
+        function updateUIForRecording() {
+            recordButton.classList.add('hidden');
+            recordButton.classList.remove('recording');
+            pauseButton.classList.remove('hidden');
+            stopButton.classList.remove('hidden');
+            transcribeButton.classList.add('hidden');
+            audioPlayerContainer.innerHTML = '';
+            transcriptionContainer.style.display = 'none';
+        }
+
+        function updateUIForStopped() {
+            recordButton.classList.remove('hidden');
+            recordButton.classList.remove('recording');
+            pauseButton.classList.add('hidden');
+            stopButton.classList.add('hidden');
+            pauseButton.innerHTML = '<i class="material-icons">pause</i>';
+            pauseButton.title = "Pause Recording";
+        }
+
+        // Mock transcription and summary
+        function transcribeAndSummarize() {
+            loadingSpinner.style.display = 'block';
+            transcribeButton.classList.add('hidden');
+
+            setTimeout(() => {
+                loadingSpinner.style.display = 'none';
+                transcriptionContainer.style.display = 'block';
+                transcriptionText.textContent = "This is a sample transcription of the recorded audio. The user discussed the quarterly sales report and upcoming marketing campaigns. They mentioned a need to follow up with the design team regarding the new ad creatives.";
+                summaryText.textContent = "The user discussed Q3 sales and future marketing plans. A follow-up with the design team about new ad creatives is required.";
+            }, 2000); // Simulate API call delay
+        }
+
+        // Event listeners
+        recordButton.addEventListener('click', startRecording);
+        pauseButton.addEventListener('click', togglePause);
+        stopButton.addEventListener('click', stopRecording);
+        transcribeButton.addEventListener('click', transcribeAndSummarize);
+
+    </script>
+</body>
+</html>
